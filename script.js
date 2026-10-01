@@ -64,6 +64,8 @@ var M={},KEY="dev-paths-v1",done={},cur=R[0].id,opened={};
 T.forEach(function(t){M[t[0]]=t});
 try{done=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){done={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
+var PKEY="devcompass-prefs-v1";
+function savePrefs(){try{localStorage.setItem(PKEY,JSON.stringify({role:cur,rel:relF,sec:secF,opened:opened}))}catch(e){}}
 try{var h=location.hash.slice(1);if(R.some(function(r){return r.id===h}))cur=h}catch(e){}
 var LB={E:"Essential",H:"High demand",G:"Growing",S:"Situational",N:"Niche"};
 function role(){return R.filter(function(r){return r.id===cur})[0]}
@@ -72,7 +74,7 @@ function cnt(id){var d=0;M[id][4].forEach(function(_,i){if(done[id+"."+i])d++});
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function eachId(fn){groups(role()).forEach(function(g){g[2].forEach(fn)})}
 function render(){
-  var tabs=document.getElementById("tabs");tabs.innerHTML="";syncF();
+  var tabs=document.getElementById("tabs");tabs.innerHTML="";syncF();savePrefs();
   R.forEach(function(r){var b=el("button",null,r.name);b.setAttribute("role","tab");b.setAttribute("aria-selected",r.id===cur);
     b.onclick=function(){cur=r.id;try{history.replaceState(null,"","#"+cur)}catch(e){}render()};tabs.appendChild(b)});
   var r=role(),td=0,tt=0,v=document.getElementById("view");
@@ -91,7 +93,7 @@ function render(){
     list.forEach(function(id){
       var t=M[id],c=cnt(id),d=el("details");
       if(opened[id])d.open=true;
-      d.addEventListener("toggle",function(){opened[id]=d.open});
+      d.addEventListener("toggle",function(){opened[id]=d.open;savePrefs()});
       var s=el("summary");s.appendChild(el("span","nm",t[1]));
       s.appendChild(el("span","chip "+t[2],LB[t[2]]));s.appendChild(el("span","cnt",c[0]+"/"+c[1]));
       d.appendChild(s);d.appendChild(el("p","why",t[3]));
@@ -106,6 +108,16 @@ function render(){
   if(!shown)v.appendChild(el("p","empty","No paths match these filters for this role. Reset the filters or choose another section."));
 }
 var relF={},secF="all";
+try{
+  var pf=JSON.parse(localStorage.getItem(PKEY)||"null");
+  if(pf){
+    var hashRole=R.some(function(r){return r.id===location.hash.slice(1)});
+    if(!hashRole&&R.some(function(r){return r.id===pf.role}))cur=pf.role;
+    relF=pf.rel&&typeof pf.rel==="object"?pf.rel:{};
+    secF=typeof pf.sec==="string"?pf.sec:"all";
+    opened=pf.opened&&typeof pf.opened==="object"?pf.opened:{};
+  }
+}catch(e){}
 function syncF(){
   document.querySelectorAll("[data-rel]").forEach(function(b){b.setAttribute("aria-pressed",!!relF[b.dataset.rel])});
   document.querySelectorAll("[data-sec]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.sec===secF)});
