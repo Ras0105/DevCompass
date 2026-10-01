@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="DevCompass: role-based developer roadmaps with relevance tags for web, frontend, backend, full-stack and software developers.">
+<title>DevCompass: Developer Roadmaps by Role</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>DevCompass</h1>
+  <p class="sub">Role-based developer roadmaps. Choose a role, then pick a stack path. Each path is its own checklist.</p>
+  <nav role="tablist" id="tabs"></nav>
+  <p class="intro" id="intro"></p>
+  <div class="prog"><span id="ptxt"></span><div class="bar"><i id="pbar"></i></div></div>
+  <div class="legend"><span><b class="E">Essential</b> expected nearly everywhere</span><span><b class="H">High demand</b> many open roles</span><span><b class="G">Growing</b> rising fast</span><span><b class="S">Situational</b> depends on employer or region</span><span><b class="N">Niche</b> small market</span></div>
+  <div class="tools"><button id="exp">Expand all</button><button id="col">Collapse all</button><button id="clr">Clear this role</button></div>
+  <div class="flt" id="fr"><b>Relevance</b><button data-rel="E">Essential</button><button data-rel="H">High demand</button><button data-rel="G">Growing</button><button data-rel="S">Situational</button><button data-rel="N">Niche</button></div>
+  <div class="flt" id="fs"><b>Section</b><button data-sec="all">All</button><button data-sec="Start here">Start here</button><button data-sec="Stack paths">Stack paths</button><button data-sec="Add-ons">Add-ons</button><button id="rf">Reset filters</button></div>
+  <div id="view"></div>
+  <footer>Relevance labels are an editorial judgment as of late 2026, not live job-board data. Demand varies by country and employer, so check listings in your target market. A path shared by several roles is ticked once.</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
